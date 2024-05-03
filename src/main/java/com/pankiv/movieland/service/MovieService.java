@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface MovieService {
     List<Movie> getListMovies();
+
+    List<Movie> getTreeRandomMovies();
 }

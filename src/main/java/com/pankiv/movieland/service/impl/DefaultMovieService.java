@@ -10,12 +10,16 @@ import java.util.List;
 
 @Service
 public class DefaultMovieService implements MovieService {
-
     @Autowired
-    private MovieRepository movieRepository;
+    private  MovieRepository movieRepository;
 
     @Override
     public List<Movie> getListMovies() {
         return movieRepository.findAll();
+    }
+
+    @Override
+    public List<Movie> getTreeRandomMovies() {
+        return movieRepository.findAllTreeRandom();
     }
 }
