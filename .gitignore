@@ -1,6 +1,7 @@
 HELP.md
 mvnw
 mvnw.cmd
+movieland.log
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
