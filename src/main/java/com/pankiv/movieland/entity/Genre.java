@@ -22,7 +22,7 @@ public class Genre {
     private Long id;
     private String genre;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "genre", orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "genre", orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<Movie> movies = new ArrayList<>();
 }

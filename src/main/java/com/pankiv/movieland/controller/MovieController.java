@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/movies/")
+@RequestMapping("api/v1/movies")
 public class MovieController {
 
     @Autowired
@@ -20,7 +20,8 @@ public class MovieController {
     public List<Movie> getListMovies() {
         return movieService.getListMovies();
     }
-    @GetMapping("random")
+
+    @GetMapping("/random")
     public List<Movie> getTreeRandomMovies() {
         return movieService.getTreeRandomMovies();
     }

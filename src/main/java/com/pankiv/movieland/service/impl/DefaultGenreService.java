@@ -1,7 +1,6 @@
 package com.pankiv.movieland.service.impl;
 
 import com.pankiv.movieland.entity.Genre;
-import com.pankiv.movieland.entity.Movie;
 import com.pankiv.movieland.repository.GenreRepository;
 import com.pankiv.movieland.service.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +10,7 @@ import java.util.List;
 
 @Service
 public class DefaultGenreService implements GenreService {
+
     @Autowired
     private GenreRepository genreRepository;
 

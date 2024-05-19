@@ -1,7 +1,6 @@
 package com.pankiv.movieland.service.impl;
 
 import com.pankiv.movieland.entity.Movie;
-import com.pankiv.movieland.repository.GenreRepository;
 import com.pankiv.movieland.repository.MovieRepository;
 import com.pankiv.movieland.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +10,12 @@ import java.util.List;
 
 @Service
 public class DefaultMovieService implements MovieService {
-    @Autowired
-    private  MovieRepository movieRepository;
-    @Autowired
-    private GenreRepository genreRepository;
+
+    private final MovieRepository movieRepository;
+
+    public DefaultMovieService(MovieRepository movieRepository) {
+        this.movieRepository = movieRepository;
+    }
 
     @Override
     public List<Movie> getListMovies() {
@@ -26,7 +27,7 @@ public class DefaultMovieService implements MovieService {
         return movieRepository.findAllTreeRandom();
     }
 
-    @Override
+        @Override
     public List<Movie> getMoviesByGenreId(Long genreId) {
         return movieRepository.findByGenreId(genreId);
     }

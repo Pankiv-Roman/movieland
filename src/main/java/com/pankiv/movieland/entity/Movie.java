@@ -1,12 +1,9 @@
 package com.pankiv.movieland.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Data
@@ -14,6 +11,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder(builderMethodName = "movieBuilder")
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +24,7 @@ public class Movie {
     private Double price;
     private String picturePath;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "genre_id")
     @JsonBackReference
     private Genre genre;
