@@ -3,10 +3,11 @@ package com.pankiv.movieland.service.impl;
 import com.pankiv.movieland.entity.Movie;
 import com.pankiv.movieland.repository.MovieRepository;
 import com.pankiv.movieland.service.MovieService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class DefaultMovieService implements MovieService {
@@ -18,7 +19,10 @@ public class DefaultMovieService implements MovieService {
     }
 
     @Override
-    public List<Movie> getListMovies() {
+    public List<Movie> getListMovies(Double rating, String sort) {
+        if (Objects.equals(sort, "desc")) {
+            return movieRepository.findAllAndSortByRating(rating) ;
+        }
         return movieRepository.findAll();
     }
 
