@@ -1,6 +1,6 @@
 package com.pankiv.movieland.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,7 +10,6 @@ import java.util.List;
 @Entity
 @Data
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(builderMethodName = "genreBuilder" )
@@ -22,7 +21,7 @@ public class Genre {
     private Long id;
     private String genre;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "genre", orphanRemoval = true, fetch = FetchType.EAGER)
-    @JsonManagedReference
+    @ManyToMany(mappedBy = "genres")
+    @JsonIgnoreProperties("genres")
     private List<Movie> movies = new ArrayList<>();
 }

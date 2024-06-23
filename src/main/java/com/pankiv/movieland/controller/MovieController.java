@@ -18,9 +18,9 @@ public class MovieController {
     private MovieService movieService;
 
     @GetMapping()
-    public List<Movie> getListMovies(@RequestParam(required = false) Double rating,
-                                     @RequestParam(required = false) String sort) {
-        return movieService.getListMovies(rating, sort);
+    public List<Movie> getListMovies(@RequestParam(required = false) String rating,
+                                     @RequestParam(required = false) String price) {
+        return movieService.getListMovies(rating, price);
     }
 
     @GetMapping("/random")

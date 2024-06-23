@@ -1,8 +1,9 @@
 package com.pankiv.movieland.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.*;
 
 
 @Entity
@@ -24,9 +25,16 @@ public class Movie {
     private Double price;
     private String picturePath;
 
-    @ManyToOne()
-    @JoinColumn(name = "genre_id")
-    @JsonBackReference
-    private Genre genre;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "movie_genre",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id")
+    )
+    private List<Genre> genres = new ArrayList<>();
 
+    public void addGenre(Genre genre) {
+        this.genres.add(genre);
+        genre.getMovies().add(this);
+    }
 }

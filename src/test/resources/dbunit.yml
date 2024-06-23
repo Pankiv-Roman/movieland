@@ -1,5 +1,1 @@
-cacheConnection: false
-leakHunter: false
 caseInsensitiveStrategy: LOWERCASE
-properties:
-  caseSensitiveTableNames: false

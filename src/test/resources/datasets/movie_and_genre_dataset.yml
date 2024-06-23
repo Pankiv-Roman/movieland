@@ -38,7 +38,6 @@ movie:
   rating: 8.9
   price: 123.45
   picture_path: "https://ru.wikipedia.org/wiki/%D0%9F%D0%BE%D0%B1%D0%B5%D0%B3_%D0%B8%D0%B7_%D0%A8%D0%BE%D1%83%D1%88%D0%B5%D0%BD%D0%BA%D0%B0#/media/%D0%A4%D0%B0%D0%B9%D0%BB:Movie_poster_the_shawshank_redemption.jpg"
-  genre_id: 1
 - id: 2
   name_native: "The Green Mile"
   name_ukrainian: "Зелена миля"
@@ -46,7 +45,6 @@ movie:
   rating: 8.9
   price: 134.67
   picture_path: "https://uk.wikipedia.org/wiki/%D0%97%D0%B5%D0%BB%D0%B5%D0%BD%D0%B0_%D0%BC%D0%B8%D0%BB%D1%8F_%28%D1%84%D1%96%D0%BB%D1%8C%D0%BC%29#/media/%D0%A4%D0%B0%D0%B9%D0%BB:Green_mile_(%D0%97%D0%B5%D0%BB%D0%B5%D0%BD%D0%B0_%D0%BC%D0%B8%D0%BB%D1%8F).jpg"
-  genre_id: 1
 - id: 3
   name_native: "Forrest Gump"
   name_ukrainian: "Форрест Гамп"
@@ -54,7 +52,6 @@ movie:
   rating: 8.6
   price: 200.60
   picture_path: "https://ru.wikipedia.org/wiki/%D0%9F%D0%BE%D0%B1%D0%B5%D0%B3_%D0%B8%D0%B7_%D0%A8%D0%BE%D1%83%D1%88%D0%B5%D0%BD%D0%BA%D0%B0#/media/%D0%A4%D0%B0%D0%B9%D0%BB:Movie_poster_the_shawshank_redemption.jpg"
-  genre_id: 1
 - id: 4
   name_native: "Schindler's List"
   name_ukrainian: "Список Шиндлера"
@@ -62,4 +59,25 @@ movie:
   rating: 8.8
   price: 150.50
   picture_path: "https://ru.wikipedia.org/wiki/%D0%9F%D0%BE%D0%B1%D0%B5%D0%B3_%D0%B8%D0%B7_%D0%A8%D0%BE%D1%83%D1%88%D0%B5%D0%BD%D0%BA%D0%B0#/media/%D0%A4%D0%B0%D0%B9%D0%BB:Movie_poster_the_shawshank_redemption.jpg"
+
+movie_genre:
+- movie_id: 1
   genre_id: 1
+- movie_id: 1
+  genre_id: 2
+- movie_id: 2
+  genre_id: 1
+- movie_id: 2
+  genre_id: 3
+- movie_id: 2
+  genre_id: 2
+- movie_id: 2
+  genre_id: 4
+- movie_id: 3
+  genre_id: 1
+- movie_id: 3
+  genre_id: 5
+- movie_id: 4
+  genre_id: 1
+- movie_id: 4
+  genre_id: 6
