@@ -18,11 +18,23 @@ public class DefaultMovieService implements MovieService {
     }
 
     @Override
-    public List<Movie> getListMovies(Double rating, String sort) {
-        if (Objects.equals(sort, "desc")) {
-            return movieRepository.findAllAndSortByRating(rating) ;
+    public List<Movie> getListMovies(String rating, String price) {
+        Sort sort = getSort(rating, price);
+        return movieRepository.findAll(sort);
+    }
+
+    private Sort getSort(String rating, String price) {
+        if (rating != null) {
+            return Sort.by(Sort.Order.desc("rating"));
+        } else if (price != null) {
+            return switch (price) {
+                case "asc" -> Sort.by(Sort.Order.asc("price"));
+                case "desc" -> Sort.by(Sort.Order.desc("price"));
+                default -> Sort.unsorted();
+            };
+        } else {
+            return Sort.unsorted();
         }
-        return movieRepository.findAll();
     }
 
     @Override
