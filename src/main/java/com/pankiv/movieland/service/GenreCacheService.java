@@ -4,7 +4,7 @@ import com.pankiv.movieland.entity.Genre;
 
 import java.util.List;
 
-public interface CacheService {
+public interface GenreCacheService {
 
     List<Genre> getAllGenresFromCache();
 }

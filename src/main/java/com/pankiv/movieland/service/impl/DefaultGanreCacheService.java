@@ -2,27 +2,28 @@ package com.pankiv.movieland.service.impl;
 
 import com.pankiv.movieland.entity.Genre;
 import com.pankiv.movieland.repository.GenreRepository;
-import com.pankiv.movieland.service.CacheService;
+import com.pankiv.movieland.service.GenreCacheService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 @Slf4j
-@Service
-public class DefaultCacheService implements CacheService {
+@Component
+public class DefaultGanreCacheService implements GenreCacheService {
 
     private final GenreRepository genreRepository;
     private final List<Genre> genreCache = new CopyOnWriteArrayList<>();
     private final AtomicBoolean cacheInitialized = new AtomicBoolean(false);
 
     @Autowired
-    public DefaultCacheService(GenreRepository genreRepository) {
+    public DefaultGanreCacheService(GenreRepository genreRepository) {
         this.genreRepository = genreRepository;
     }
 
@@ -30,10 +31,12 @@ public class DefaultCacheService implements CacheService {
         if (cacheInitialized.compareAndSet(false, true)) {
             initializeCache();
         }
-        return new ArrayList<>(genreCache);
+        return genreCache.stream()
+                .map(Genre::clone)
+                .collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
     }
 
-    private synchronized void initializeCache() {
+    private void initializeCache() {
         if (genreCache.isEmpty()) {
             log.info("Initializing genre cache");
             List<Genre> genresFromDB = genreRepository.findAll();
@@ -42,14 +45,12 @@ public class DefaultCacheService implements CacheService {
         }
     }
 
-    @Scheduled(cron = "${cache.movie.cron}")
-    private synchronized void updateGenreCache() {
+    @Scheduled(fixedDelay = 4 * 60 * 1000)
+    private void updateGenreCache() {
         log.info("Refreshing genre cache");
         List<Genre> genresFromDB = genreRepository.findAll();
-        List<Genre> newGenres = genresFromDB.stream()
-                .filter(genre -> !genreCache.contains(genre))
-                .toList();
-        genreCache.addAll(newGenres);
-        log.info("Genre cache updated with {} new entries", newGenres.size());
+        genreCache.clear();
+        genreCache.addAll(genresFromDB);
+        log.info("Genre cache updated with {} new entries", genreCache.size());
     }
 }

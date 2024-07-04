@@ -4,6 +4,7 @@ package com.pankiv.movieland.controller;
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.core.api.dataset.ExpectedDataSet;
 import com.pankiv.movieland.AbstractBaseITest;
+import com.vladmihalcea.sql.SQLStatementCountValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static com.vladmihalcea.sql.SQLStatementCountValidator.assertSelectCount;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -38,6 +40,7 @@ class MovieControllerTest extends AbstractBaseITest {
                 .andExpect(jsonPath("$.length()").value(4))
                 .andExpect(status().isOk());
     }
+
     @Test
     @DataSet(value = "datasets/movie_and_genre_dataset.yml")
     @ExpectedDataSet(value = "datasets/movie_and_genre_dataset.yml")
@@ -156,10 +159,13 @@ class MovieControllerTest extends AbstractBaseITest {
     }
 
     @Test
-    @DataSet(value = "datasets/movie_and_genre_dataset.yml")
+    @DataSet(value = "datasets/movie_and_genre_dataset.yml",
+            cleanAfter = true, cleanBefore = true, skipCleaningFor = "flyway_scheme_history")
     @ExpectedDataSet(value = "datasets/movie_and_genre_dataset.yml")
     @DisplayName("Test get 3 random movies")
     void getTreeRandomMovies() throws Exception {
+        SQLStatementCountValidator.reset();
+
         mockMvc.perform(get("/api/v1/movies/random")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.length()").exists())
@@ -172,5 +178,7 @@ class MovieControllerTest extends AbstractBaseITest {
                 .andExpect(jsonPath("$[*].yearOfRealise").exists())
                 .andExpect(jsonPath("$.length()").value(3))
                 .andExpect(status().isOk());
+
+        assertSelectCount(1);
     }
 }

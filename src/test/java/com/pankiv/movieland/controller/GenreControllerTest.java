@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static com.vladmihalcea.sql.SQLStatementCountValidator.assertSelectCount;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -31,6 +32,7 @@ class GenreControllerTest extends AbstractBaseITest {
                 .andExpect(jsonPath("$[0].genre").value("Драма"))
                 .andExpect(jsonPath("$.length()").value(15))
                 .andExpect(status().isOk());
+        assertSelectCount(0);
     }
 
     @Test
@@ -42,5 +44,6 @@ class GenreControllerTest extends AbstractBaseITest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$[*].id").value(4))
                 .andExpect(status().isOk());
+        assertSelectCount(0);
     }
 }

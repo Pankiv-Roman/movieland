@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder(builderMethodName = "genreBuilder" )
 
-public class Genre {
+public class Genre implements Cloneable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
@@ -24,4 +24,12 @@ public class Genre {
     @ManyToMany(mappedBy = "genres")
     @JsonIgnoreProperties("genres")
     private List<Movie> movies = new ArrayList<>();
+
+    public Genre clone() {
+        try {
+            return (Genre) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
+    }
 }

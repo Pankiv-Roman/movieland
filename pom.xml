@@ -15,6 +15,10 @@
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>21</java.version>
+		<io.hypersistence.version>3.7.3</io.hypersistence.version>
+		<com.vladmihalcea.version>1.0.7</com.vladmihalcea.version>
+		<io.jsonwebtoken.version>0.12.5</io.jsonwebtoken.version>
+		<com.github.database-rider.version>1.42.0</com.github.database-rider.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -57,19 +61,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.dbunit</groupId>
-			<artifactId>dbunit</artifactId>
-			<version>2.7.3</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.testcontainers</groupId>
-			<artifactId>testcontainers</artifactId>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
 			<groupId>org.testcontainers</groupId>
 			<artifactId>postgresql</artifactId>
 		</dependency>
@@ -83,6 +74,18 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-testcontainers</artifactId>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>io.hypersistence</groupId>
+			<artifactId>hypersistence-utils-hibernate-63</artifactId>
+			<version>${io.hypersistence.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.vladmihalcea</groupId>
+			<artifactId>db-util</artifactId>
+			<version>${com.vladmihalcea.version}</version>
 		</dependency>
 	</dependencies>
 

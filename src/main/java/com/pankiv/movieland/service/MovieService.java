@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface MovieService {
 
-    List<Movie> getListMovies(String rating, String price);
+    List<Movie> getListMovies(String ratingSortOrder, String priceSortOrder);
 
     List<Movie> getTreeRandomMovies();
 
