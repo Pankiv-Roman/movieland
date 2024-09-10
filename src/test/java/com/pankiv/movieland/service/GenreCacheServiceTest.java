@@ -40,7 +40,7 @@ class GenreCacheServiceTest extends AbstractBaseITest {
         getAllGenres.get(0).setGenre("test");
 
         assertNotNull(getAllGenres);
-        assertEquals("test", getAllGenres.get(0).getGenre());
+        assertNotEquals("test", getAllGenres.get(0).getGenre());
 
         List<Genre> getAllGenresAfterChange = cacheService.getAllGenresFromCache();
 

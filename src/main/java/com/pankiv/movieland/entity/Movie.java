@@ -5,27 +5,23 @@ import lombok.*;
 
 import java.util.*;
 
-
 @Entity
 @Data
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder(builderMethodName = "movieBuilder")
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-    private Long id;
     private String nameUkrainian;
     private String nameNative;
-    private Integer yearOfRealise;
+    private Integer yearOfRelease;
     private Double rating;
     private Double price;
     private String picturePath;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "movie_genre",
             joinColumns = @JoinColumn(name = "movie_id"),

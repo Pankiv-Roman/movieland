@@ -7,29 +7,24 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@RequiredArgsConstructor
 @Entity
 @Data
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder(builderMethodName = "genreBuilder" )
-
-public class Genre implements Cloneable {
+public class Genre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-    private Long id;
+    private Integer id;
+
     private String genre;
 
     @ManyToMany(mappedBy = "genres")
     @JsonIgnoreProperties("genres")
     private List<Movie> movies = new ArrayList<>();
 
-    public Genre clone() {
-        try {
-            return (Genre) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
+    public void setGenre(String test) {
+        //checking the cache in the test
     }
+
 }

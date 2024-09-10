@@ -1,15 +1,14 @@
 package com.pankiv.movieland.service;
 
 
-import com.pankiv.movieland.entity.Movie;
-
+import com.pankiv.movieland.dto.MovieDto;
 import java.util.List;
 
 public interface MovieService {
 
-    List<Movie> getListMovies(String ratingSortOrder, String priceSortOrder);
+    List<MovieDto> getListMovies(String ratingSortOrder, String priceSortOrder);
 
-    List<Movie> getTreeRandomMovies();
+    List<MovieDto> getTreeRandomMovies();
 
-    List<Movie> getMoviesByGenreId(Long genreId);
+    List<MovieDto> getMoviesByGenreId(Long genreId);
 }

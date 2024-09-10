@@ -1,21 +1,23 @@
 package com.pankiv.movieland.service.impl;
 
-import com.pankiv.movieland.entity.Genre;
+import com.pankiv.movieland.dto.GenreDto;
+import com.pankiv.movieland.mapper.GenreMapper;
 import com.pankiv.movieland.repository.GenreRepository;
 import com.pankiv.movieland.service.GenreService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class DefaultGenreService implements GenreService {
 
-    @Autowired
-    private GenreRepository genreRepository;
+    private final GenreRepository genreRepository;
+    private final GenreMapper genreMapper;
 
     @Override
-    public List<Genre> getAllGenres() {
-        return genreRepository.findAll();
+    public List<GenreDto> getAllGenres() {
+        return genreMapper.toDtoList(genreRepository.findAll());
     }
 }

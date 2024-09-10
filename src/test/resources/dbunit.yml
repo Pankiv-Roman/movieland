@@ -1,1 +1,2 @@
-caseInsensitiveStrategy: LOWERCASE
+caseInsensitiveStrategy: !!com.github.database.rider.core.api.configuration.Orthography 'LOWERCASE'
+cacheConnection: false

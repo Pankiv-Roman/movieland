@@ -1,8 +1,8 @@
 package com.pankiv.movieland.controller;
 
-import com.pankiv.movieland.entity.Movie;
+import com.pankiv.movieland.dto.MovieDto;
 import com.pankiv.movieland.service.MovieService;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,19 +12,19 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/movies")
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class MovieController {
 
     private final MovieService movieService;
 
     @GetMapping()
-    public List<Movie> getListMovies(@RequestParam(name = "rating", required = false) String ratingSortOrder,
-                                     @RequestParam(name = "price", required = false) String priceSortOrder) {
+    public List<MovieDto> getListMovies(@RequestParam(name = "rating", required = false) String ratingSortOrder,
+                                        @RequestParam(name = "price", required = false) String priceSortOrder) {
         return movieService.getListMovies(ratingSortOrder, priceSortOrder);
     }
 
     @GetMapping("/random")
-    public List<Movie> getTreeRandomMovies() {
+    public List<MovieDto> getTreeRandomMovies() {
         return movieService.getTreeRandomMovies();
     }
 }

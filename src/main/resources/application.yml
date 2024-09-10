@@ -13,7 +13,7 @@ spring.flyway:
   user: postgres
   password: 1111
   schemas: public
-  enabled: true
+  enabled: false
   locations: classpath:db/migration
 
 spring:
@@ -30,7 +30,3 @@ logging:
           descriptor:
             sql:
               BasicBinder: TRACE
-
-cache:
-  movie:
-    cron: "0 0 */4 * * *"

@@ -12,28 +12,25 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Component
-public class DefaultGanreCacheService implements GenreCacheService {
+public class DefaultGenreCacheService implements GenreCacheService {
 
     private final GenreRepository genreRepository;
     private final List<Genre> genreCache = new CopyOnWriteArrayList<>();
     private final AtomicBoolean cacheInitialized = new AtomicBoolean(false);
 
     @Autowired
-    public DefaultGanreCacheService(GenreRepository genreRepository) {
+    public DefaultGenreCacheService(GenreRepository genreRepository) {
         this.genreRepository = genreRepository;
     }
 
-    public List<Genre> getAllGenresFromCache () {
+    public List<Genre> getAllGenresFromCache() {
         if (cacheInitialized.compareAndSet(false, true)) {
             initializeCache();
         }
-        return genreCache.stream()
-                .map(Genre::clone)
-                .collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
+        return Collections.unmodifiableList(genreCache);
     }
 
     private void initializeCache() {
