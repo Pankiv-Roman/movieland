@@ -28,4 +28,18 @@ public interface MovieRepository extends JpaRepository<Movie, Integer> {
 
     @Query(value = "SELECT m FROM Movie m JOIN FETCH m.genres ORDER BY m.price ASC")
     List<Movie> findAllBySortByPriceAsc();
+
+    //    @Query("SELECT m FROM Movie m " +
+//            "LEFT JOIN FETCH m.genres g " +
+//            "LEFT JOIN FETCH m.countries c " +
+//            "WHERE m.id = :movieId")
+//    Movie findMovieByIdWithDetails(Integer movieId);
+    @Query("SELECT m FROM Movie m " +
+            "LEFT JOIN FETCH m.genres g " +
+            "LEFT JOIN FETCH m.countries c " +
+            "WHERE m.id = :movieId")
+    Movie findMovieByIdWithDetails(@Param("movieId") Integer movieId);
+
+    @Query("SELECT m FROM Movie m WHERE m.id = :movieId")
+    Movie findMovieById(Integer movieId);
 }

@@ -2,6 +2,8 @@ package com.pankiv.movieland.service;
 
 
 import com.pankiv.movieland.dto.MovieDto;
+import com.pankiv.movieland.entity.Movie;
+
 import java.util.List;
 
 public interface MovieService {
@@ -11,4 +13,6 @@ public interface MovieService {
     List<MovieDto> getTreeRandomMovies();
 
     List<MovieDto> getMoviesByGenreId(Long genreId);
+
+    Movie getMovieByIdWithDetails(Integer movieId);
 }

@@ -8,26 +8,21 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@RequiredArgsConstructor
 @Entity
-@Table(name = "genre")
-@Data
-public class Genre {
+@Table(name = "country")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class Country {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private Integer id;
+    private String name;
 
-    private String genre;
-
-    @ManyToMany(mappedBy = "genres")
-    @JsonIgnoreProperties("genres")
+    @ManyToMany(mappedBy = "countries")
+    @JsonIgnoreProperties("countries")
     @JsonIgnore
-    private List<Movie> movies = new ArrayList<>();
-
-    public void setGenre(String test) {
-        //checking the cache in the test
-    }
-
+    private List<Movie> countries = new ArrayList<>();
 }

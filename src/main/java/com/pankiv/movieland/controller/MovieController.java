@@ -1,16 +1,16 @@
 package com.pankiv.movieland.controller;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.pankiv.movieland.dto.MovieDto;
+import com.pankiv.movieland.entity.Movie;
 import com.pankiv.movieland.service.MovieService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @RequestMapping("api/v1/movies")
 @AllArgsConstructor
 public class MovieController {
@@ -26,5 +26,10 @@ public class MovieController {
     @GetMapping("/random")
     public List<MovieDto> getTreeRandomMovies() {
         return movieService.getTreeRandomMovies();
+    }
+
+    @GetMapping("/{movieId}")
+    public Movie getMovieByIdWithDetails(@PathVariable Integer movieId) {
+        return movieService.getMovieByIdWithDetails(movieId);
     }
 }

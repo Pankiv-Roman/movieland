@@ -1,6 +1,7 @@
 package com.pankiv.movieland.controller;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.pankiv.movieland.dto.GenreDto;
 import com.pankiv.movieland.dto.MovieDto;
 import com.pankiv.movieland.service.GenreService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @AllArgsConstructor
 @RequestMapping("api/v1/genres/")
 public class GenreController {

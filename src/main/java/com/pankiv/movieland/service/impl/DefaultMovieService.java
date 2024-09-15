@@ -1,13 +1,17 @@
 package com.pankiv.movieland.service.impl;
 
 import com.pankiv.movieland.dto.MovieDto;
+import com.pankiv.movieland.entity.Movie;
 import com.pankiv.movieland.mapper.MovieMapper;
 import com.pankiv.movieland.repository.MovieRepository;
 import com.pankiv.movieland.service.MovieService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static org.hibernate.Hibernate.initialize;
 
 @Service
 @AllArgsConstructor
@@ -39,5 +43,15 @@ public class DefaultMovieService implements MovieService {
     @Override
     public List<MovieDto> getMoviesByGenreId(Long genreId) {
         return movieMapper.toDtoList(movieRepository.findByGenreId(genreId));
+    }
+
+    @Override
+    public Movie getMovieByIdWithDetails(Integer movieId) {
+        Movie movie = movieRepository.findById(movieId).orElseThrow(()
+                -> new EntityNotFoundException("Movie not found!"));
+        initialize(movie.getGenres());
+        initialize(movie.getCountries());
+        initialize(movie.getReviews());
+        return movie;
     }
 }

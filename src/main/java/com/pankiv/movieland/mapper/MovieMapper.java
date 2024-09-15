@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface MovieMapper {
 
-    MovieDto toDto(Movie movie);
+    Movie toDto(Movie movie);
 
     List<MovieDto> toDtoList(List<Movie> movies);
 

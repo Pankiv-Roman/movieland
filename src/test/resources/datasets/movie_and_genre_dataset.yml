@@ -81,3 +81,29 @@ movie_genre:
   genre_id: 1
 - movie_id: 4
   genre_id: 6
+
+users:
+- id: 3
+  nickname: "Дарлин Эдвардс"
+
+- id: 4
+  nickname: "Габриэль Джексон"
+
+review:
+- id: 1
+  text: "Гениальное кино!"
+  movie_id: 1
+  user_id: 3
+
+- id: 2
+  text: "Очень хороший фильм!"
+  movie_id: 1
+  user_id: 4
+
+movie_country:
+- movie_id: 1
+  country_id: 1
+
+country:
+- id: 1
+  name: 'США'
