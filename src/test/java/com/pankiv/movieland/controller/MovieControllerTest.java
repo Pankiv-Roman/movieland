@@ -195,4 +195,39 @@ class MovieControllerTest extends AbstractBaseITest {
         assertSelectCount(1);
     }
 
+    @Test
+    @DataSet(value = "datasets/movie_and_genre_dataset.yml",
+            cleanAfter = true, cleanBefore = true, skipCleaningFor = "flyway_scheme_history")
+    @ExpectedDataSet(value = "datasets/movie_and_genre_dataset.yml")
+    @DisplayName("Test get movie by id with details")
+    void testGetMovieByIdWithDetails() throws Exception {
+        SQLStatementCountValidator.reset();
+        mockMvc.perform(get("/api/v1/movies/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.nameNative").value("The Shawshank Redemption"))
+                .andExpect(jsonPath("$.nameUkrainian").value("Втеча з Шовшенка"))
+                .andExpect(jsonPath("$.picturePath").value("https://ru.wikipedia.org/wiki/%D0%9F%D0%BE%D0%B1%D0%B5%D0%B3_%D0%B8%D0%B7_%D0%A8%D0%BE%D1%83%D1%88%D0%B5%D0%BD%D0%BA%D0%B0#/media/%D0%A4%D0%B0%D0%B9%D0%BB:Movie_poster_the_shawshank_redemption.jpg"))
+                .andExpect(jsonPath("$.price").value(123.45))
+                .andExpect(jsonPath("$.rating").value(8.9))
+                .andExpect(jsonPath("$.yearOfRelease").value(1994))
+                .andExpect(jsonPath("$.genres[0].id").value(1))
+                .andExpect(jsonPath("$.genres[0].genre").value("Драма"))
+                .andExpect(jsonPath("$.genres[1].id").value(2))
+                .andExpect(jsonPath("$.genres[1].genre").value("Кримінал"))
+                .andExpect(jsonPath("$.countries[0].id").value(1))
+                .andExpect(jsonPath("$.countries[0].name").value("США"))
+                .andExpect(jsonPath("$.reviews[0].id").value(1))
+                .andExpect(jsonPath("$.reviews[0].text").value("Гениальное кино!"))
+                .andExpect(jsonPath("$.reviews[1].id").value(2))
+                .andExpect(jsonPath("$.reviews[1].text").value("Очень хороший фильм!"))
+                .andExpect(jsonPath("$.users[0].id").value(3))
+                .andExpect(jsonPath("$.users[0].nickname").value("Дарлин Эдвардс"))
+                .andExpect(jsonPath("$.users[1].id").value(4))
+                .andExpect(jsonPath("$.users[1].nickname").value("Габриэль Джексон"))
+                .andExpect(status().isOk());
+
+//        assertSelectCount(1);
+    }
+
 }
