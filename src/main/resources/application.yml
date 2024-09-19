@@ -5,15 +5,15 @@ spring.jpa:
 
 spring.datasource:
   driverClassName: org.postgresql.Driver
-  url: jdbc:postgresql://localhost:5432/movielande
+  url: jdbc:postgresql://localhost:2023/postgres
   username: postgres
-  password: password
+  password: 1111
 
 spring.flyway:
   user: postgres
-  password: password
+  password: 1111
   schemas: public
-  enabled: true
+  enabled: false
   locations: classpath:db/migration
 
 spring:
