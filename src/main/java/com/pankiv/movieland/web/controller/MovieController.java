@@ -1,14 +1,15 @@
-package com.pankiv.movieland.controller;
+package com.pankiv.movieland.web.controller;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.pankiv.movieland.dto.MovieDto;
-import com.pankiv.movieland.entity.Movie;
+import com.pankiv.movieland.dto.MovieFullDataDto;
 import com.pankiv.movieland.service.MovieService;
 import lombok.AllArgsConstructor;
-import org.hibernate.Hibernate;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -29,13 +30,10 @@ public class MovieController {
         return movieService.getTreeRandomMovies();
     }
 
-    @GetMapping("/{movieId}")
-    public Movie getMovieByIdWithDetails(@PathVariable Integer movieId) {
-        Movie movie = movieService.getMovieByIdWithDetails(movieId);
-        Hibernate.initialize(movie.getGenres());
-        Hibernate.initialize(movie.getCountries());
-        Hibernate.initialize(movie.getReviews());
-        movie.getReviews().forEach(review -> Hibernate.initialize(review.getUser()));
-        return movie;
+    @GetMapping("/{id}")
+    public ResponseEntity<MovieFullDataDto> getMovieById(@PathVariable Integer id,
+                                                 @RequestParam(value = "currency", defaultValue = "UAH") String currency) {
+        Optional<MovieFullDataDto> movie = movieService.getMovieByIdWithCurrency(id, currency.toUpperCase());
+        return movie.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

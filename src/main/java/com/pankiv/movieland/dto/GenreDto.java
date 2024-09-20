@@ -1,9 +1,6 @@
 package com.pankiv.movieland.dto;
 
-import com.pankiv.movieland.entity.Movie;
 import lombok.*;
-
-import java.util.List;
 
 @Data
 @Builder
@@ -13,7 +10,6 @@ public class GenreDto {
 
     private Integer id;
     private String genre;
-    private List<Movie> movies;
 }
 
 

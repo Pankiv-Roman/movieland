@@ -3,16 +3,19 @@ package com.pankiv.movieland.controller;
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.core.api.dataset.ExpectedDataSet;
 import com.pankiv.movieland.AbstractBaseITest;
+import com.pankiv.movieland.service.impl.DefaultNbuCurrencyService;
 import com.vladmihalcea.sql.SQLStatementCountValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static com.vladmihalcea.sql.SQLStatementCountValidator.assertSelectCount;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -21,6 +24,9 @@ class MovieControllerTest extends AbstractBaseITest {
 
     @Autowired
     MockMvc mockMvc;
+
+    @MockBean
+    DefaultNbuCurrencyService nbuCurrencyService;
 
     @Test
     @DataSet(value = "datasets/movie_and_genre_dataset.yml",
@@ -202,6 +208,8 @@ class MovieControllerTest extends AbstractBaseITest {
     @DisplayName("Test get movie by id with details")
     void testGetMovieByIdWithDetails() throws Exception {
         SQLStatementCountValidator.reset();
+
+        when(nbuCurrencyService.getRate("UAH")).thenReturn(1.0);
         mockMvc.perform(get("/api/v1/movies/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(1))
@@ -230,4 +238,80 @@ class MovieControllerTest extends AbstractBaseITest {
         assertSelectCount(6);
     }
 
+    @Test
+    @DataSet(value = "datasets/movie_and_genre_dataset.yml",
+            cleanAfter = true, cleanBefore = true, skipCleaningFor = "flyway_scheme_history")
+    @ExpectedDataSet(value = "datasets/movie_and_genre_dataset.yml")
+    @DisplayName("Test get movie by id with details and prise USD")
+    void testGetMovieByIdWithDetailsAndPriseUSD() throws Exception {
+        SQLStatementCountValidator.reset();
+
+        when(nbuCurrencyService.getRate("USD")).thenReturn(41.2);
+
+        mockMvc.perform(get("/api/v1/movies/1?currency=usd")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.nameNative").value("The Shawshank Redemption"))
+                .andExpect(jsonPath("$.nameUkrainian").value("Втеча з Шовшенка"))
+                .andExpect(jsonPath("$.picturePath").value("https://ru.wikipedia.org/wiki/%D0%9F%D0%BE%D0%B1%D0%B5%D0%B3_%D0%B8%D0%B7_%D0%A8%D0%BE%D1%83%D1%88%D0%B5%D0%BD%D0%BA%D0%B0#/media/%D0%A4%D0%B0%D0%B9%D0%BB:Movie_poster_the_shawshank_redemption.jpg"))
+                .andExpect(jsonPath("$.price").value(3.0))
+                .andExpect(jsonPath("$.rating").value(8.9))
+                .andExpect(jsonPath("$.yearOfRelease").value(1994))
+                .andExpect(jsonPath("$.genres[0].id").value(1))
+                .andExpect(jsonPath("$.genres[0].genre").value("Драма"))
+                .andExpect(jsonPath("$.genres[1].id").value(2))
+                .andExpect(jsonPath("$.genres[1].genre").value("Кримінал"))
+                .andExpect(jsonPath("$.countries[0].id").value(1))
+                .andExpect(jsonPath("$.countries[0].name").value("США"))
+                .andExpect(jsonPath("$.reviews[0].id").value(1))
+                .andExpect(jsonPath("$.reviews[0].text").value("Гениальное кино!"))
+                .andExpect(jsonPath("$.reviews[1].id").value(2))
+                .andExpect(jsonPath("$.reviews[1].text").value("Очень хороший фильм!"))
+                .andExpect(jsonPath("$.reviews[0].user.id").value(3))
+                .andExpect(jsonPath("$.reviews[0].user.nickname").value("Дарлин Эдвардс"))
+                .andExpect(jsonPath("$.reviews[1].user.id").value(4))
+                .andExpect(jsonPath("$.reviews[1].user.nickname").value("Габриэль Джексон"))
+                .andExpect(status().isOk());
+
+        assertSelectCount(6);
+    }
+
+
+    @Test
+    @DataSet(value = "datasets/movie_and_genre_dataset.yml",
+            cleanAfter = true, cleanBefore = true, skipCleaningFor = "flyway_scheme_history")
+    @ExpectedDataSet(value = "datasets/movie_and_genre_dataset.yml")
+    @DisplayName("Test get movie by id with details and prise USD")
+    void testGetMovieByIdWithDetailsAndPriseEUR() throws Exception {
+        SQLStatementCountValidator.reset();
+
+        when(nbuCurrencyService.getRate("EUR")).thenReturn(43.0);
+
+        mockMvc.perform(get("/api/v1/movies/1?currency=eur")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.nameNative").value("The Shawshank Redemption"))
+                .andExpect(jsonPath("$.nameUkrainian").value("Втеча з Шовшенка"))
+                .andExpect(jsonPath("$.picturePath").value("https://ru.wikipedia.org/wiki/%D0%9F%D0%BE%D0%B1%D0%B5%D0%B3_%D0%B8%D0%B7_%D0%A8%D0%BE%D1%83%D1%88%D0%B5%D0%BD%D0%BA%D0%B0#/media/%D0%A4%D0%B0%D0%B9%D0%BB:Movie_poster_the_shawshank_redemption.jpg"))
+                .andExpect(jsonPath("$.price").value(2.87))
+                .andExpect(jsonPath("$.rating").value(8.9))
+                .andExpect(jsonPath("$.yearOfRelease").value(1994))
+                .andExpect(jsonPath("$.genres[0].id").value(1))
+                .andExpect(jsonPath("$.genres[0].genre").value("Драма"))
+                .andExpect(jsonPath("$.genres[1].id").value(2))
+                .andExpect(jsonPath("$.genres[1].genre").value("Кримінал"))
+                .andExpect(jsonPath("$.countries[0].id").value(1))
+                .andExpect(jsonPath("$.countries[0].name").value("США"))
+                .andExpect(jsonPath("$.reviews[0].id").value(1))
+                .andExpect(jsonPath("$.reviews[0].text").value("Гениальное кино!"))
+                .andExpect(jsonPath("$.reviews[1].id").value(2))
+                .andExpect(jsonPath("$.reviews[1].text").value("Очень хороший фильм!"))
+                .andExpect(jsonPath("$.reviews[0].user.id").value(3))
+                .andExpect(jsonPath("$.reviews[0].user.nickname").value("Дарлин Эдвардс"))
+                .andExpect(jsonPath("$.reviews[1].user.id").value(4))
+                .andExpect(jsonPath("$.reviews[1].user.nickname").value("Габриэль Джексон"))
+                .andExpect(status().isOk());
+
+        assertSelectCount(6);
+    }
 }

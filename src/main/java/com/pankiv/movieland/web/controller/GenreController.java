@@ -1,4 +1,4 @@
-package com.pankiv.movieland.controller;
+package com.pankiv.movieland.web.controller;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

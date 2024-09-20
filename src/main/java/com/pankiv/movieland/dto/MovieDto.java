@@ -7,6 +7,8 @@ import java.util.List;
 
 @Builder
 @Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class MovieDto {

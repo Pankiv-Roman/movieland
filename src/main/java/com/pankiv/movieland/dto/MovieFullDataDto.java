@@ -1,8 +1,5 @@
 package com.pankiv.movieland.dto;
 
-import com.pankiv.movieland.entity.Country;
-import com.pankiv.movieland.entity.Genre;
-import com.pankiv.movieland.entity.Review;
 import lombok.*;
 
 import java.util.List;
@@ -23,7 +20,7 @@ public class MovieFullDataDto {
     private Double rating;
     private Double price;
     private String picturePath;
-    private List<Country> countries;
-    private List<Genre> genres;
-    private List<Review> reviews;
+    private List<CountryDto> countries;
+    private List<GenreDto> genres;
+    private List<ReviewDto> reviews;
 }

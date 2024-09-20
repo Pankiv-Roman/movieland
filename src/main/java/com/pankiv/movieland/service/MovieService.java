@@ -3,9 +3,9 @@ package com.pankiv.movieland.service;
 
 import com.pankiv.movieland.dto.MovieDto;
 import com.pankiv.movieland.dto.MovieFullDataDto;
-import com.pankiv.movieland.entity.Movie;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface MovieService {
 
@@ -15,5 +15,5 @@ public interface MovieService {
 
     List<MovieDto> getMoviesByGenreId(Long genreId);
 
-    Movie getMovieByIdWithDetails(Integer movieId);
+    Optional<MovieFullDataDto> getMovieByIdWithCurrency(Integer id, String currency);
 }

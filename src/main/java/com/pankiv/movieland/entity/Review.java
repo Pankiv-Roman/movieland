@@ -8,6 +8,8 @@ import lombok.*;
 @Entity
 @Table(name = "review")
 @Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
