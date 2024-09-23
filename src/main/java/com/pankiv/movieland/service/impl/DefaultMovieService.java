@@ -20,7 +20,7 @@ public class DefaultMovieService implements MovieService {
     private final MovieRepository movieRepository;
     private final MovieMapper movieMapper;
     private final MovieFullDataMapper movieFullDataMapper;
-    private final DefaultNbuCurrencyService nbuCurrencyService;
+    private final NbuCurrencyService nbuCurrencyService;
 
     @Override
     public List<MovieDto> getListMovies(String ratingSortOrder, String priceSortOrder) {

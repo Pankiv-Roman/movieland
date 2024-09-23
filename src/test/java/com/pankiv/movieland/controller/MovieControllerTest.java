@@ -3,7 +3,7 @@ package com.pankiv.movieland.controller;
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.core.api.dataset.ExpectedDataSet;
 import com.pankiv.movieland.AbstractBaseITest;
-import com.pankiv.movieland.service.impl.DefaultNbuCurrencyService;
+import com.pankiv.movieland.service.impl.NbuCurrencyService;
 import com.vladmihalcea.sql.SQLStatementCountValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
@@ -26,7 +26,7 @@ class MovieControllerTest extends AbstractBaseITest {
     MockMvc mockMvc;
 
     @MockBean
-    DefaultNbuCurrencyService nbuCurrencyService;
+    NbuCurrencyService nbuCurrencyService;
 
     @Test
     @DataSet(value = "datasets/movie_and_genre_dataset.yml",
@@ -208,8 +208,8 @@ class MovieControllerTest extends AbstractBaseITest {
     @DisplayName("Test get movie by id with details")
     void testGetMovieByIdWithDetails() throws Exception {
         SQLStatementCountValidator.reset();
-
         when(nbuCurrencyService.getRate("UAH")).thenReturn(1.0);
+
         mockMvc.perform(get("/api/v1/movies/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(1))
@@ -281,7 +281,7 @@ class MovieControllerTest extends AbstractBaseITest {
     @DataSet(value = "datasets/movie_and_genre_dataset.yml",
             cleanAfter = true, cleanBefore = true, skipCleaningFor = "flyway_scheme_history")
     @ExpectedDataSet(value = "datasets/movie_and_genre_dataset.yml")
-    @DisplayName("Test get movie by id with details and prise USD")
+    @DisplayName("Test get movie by id with details and prise EUR")
     void testGetMovieByIdWithDetailsAndPriseEUR() throws Exception {
         SQLStatementCountValidator.reset();
 
