@@ -30,3 +30,7 @@ logging:
           descriptor:
             sql:
               BasicBinder: TRACE
+    org.springframework.security: DEBUG
+    org.springframework.security.web.authentication: DEBUG
+    org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter: DEBUG
+    org.springframework.security.web.access: DEBUG
