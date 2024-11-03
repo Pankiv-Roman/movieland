@@ -1,6 +1,5 @@
 package com.pankiv.movieland.web.controller;
 
-
 import com.pankiv.movieland.web.request.AuthRequest;
 import com.pankiv.movieland.web.responce.AuthResponse;
 import com.pankiv.movieland.web.security.service.AuthService;
@@ -20,9 +19,10 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest loginRequest, HttpServletResponse response) {
-        return ResponseEntity.ok(authService.login(loginRequest, response));
+    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest loginRequest) {
+            return ResponseEntity.ok(authService.login(loginRequest));
     }
+
     @DeleteMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);

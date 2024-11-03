@@ -15,4 +15,6 @@ public interface JwtService {
     boolean isTokenExpired(String token);
 
     void invalidateToken(String token);
+
+    boolean isTokenInBlacklist(String jwtToken);
 }

@@ -7,6 +7,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -19,16 +20,14 @@ import java.util.function.Function;
 public class DefaultJwtService implements JwtService {
 
     private final BlacklistRepository blacklistRepository;
-    private final String secretKey = "404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970";
-    private final int lifetime = 7200000; // 2 години
 
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(@NotNull UserDetails userDetails) {
         String login = userDetails.getUsername();
         return Jwts.builder()
                 .subject(login)
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + lifetime))
+                .expiration(new Date(System.currentTimeMillis() + 7200000))
                 .signWith(getSignInKey())
                 .compact();
     }
@@ -48,6 +47,10 @@ public class DefaultJwtService implements JwtService {
         return extractClaims(token, Claims::getExpiration).before(new Date());
     }
 
+    public boolean isTokenInBlacklist(String token) {
+        return blacklistRepository.existsByToken(token);
+    }
+
     public void invalidateToken(String token) {
         Date expirationDate = extractExpirationDate(token);
         BlacklistedToken blacklistedToken = new BlacklistedToken();
@@ -60,11 +63,16 @@ public class DefaultJwtService implements JwtService {
         return extractClaims(token, Claims::getExpiration);
     }
 
-    private <T> T extractClaims(String token, Function<Claims, T> claimsTFunction) {
-        return claimsTFunction.apply(Jwts.parser().verifyWith(getSignInKey()).build().parseSignedClaims(token).getPayload());
+    private <T> T extractClaims(String token, @NotNull Function<Claims, T> claimsTFunction) {
+        return claimsTFunction.apply(Jwts.parser()
+                .verifyWith(getSignInKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload());
     }
 
-    private SecretKey getSignInKey() {
+    private @NotNull SecretKey getSignInKey() {
+        String secretKey = "404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970";
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
