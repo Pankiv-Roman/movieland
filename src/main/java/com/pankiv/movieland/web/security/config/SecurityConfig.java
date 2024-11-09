@@ -31,6 +31,7 @@ public class SecurityConfig {
                         .requestMatchers("/public/**").permitAll()
                         .requestMatchers(POST, "/api/v1/auth/login").permitAll()
                         .requestMatchers(DELETE, "/api/v1/auth/logout").authenticated()
+                        .requestMatchers(POST, "/api/v1/review").hasAuthority("USER")
                         .requestMatchers("/api/v1/movies/**").permitAll()
                         .anyRequest()
                         .authenticated()

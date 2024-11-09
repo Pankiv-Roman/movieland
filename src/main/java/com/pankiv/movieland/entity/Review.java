@@ -23,9 +23,9 @@ public class Review {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "movie_id")
     @ToString.Exclude
     private Movie movie;
 }
-
