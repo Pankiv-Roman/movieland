@@ -1,4 +1,4 @@
-package com.pankiv.movieland.controller;
+package com.pankiv.movieland.web.controller;
 
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.core.api.dataset.ExpectedDataSet;

@@ -3,9 +3,12 @@ package com.pankiv.movieland.web.controller;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.pankiv.movieland.dto.MovieDto;
 import com.pankiv.movieland.dto.MovieFullDataDto;
+import com.pankiv.movieland.dto.MovieRequestDto;
+import com.pankiv.movieland.entity.Movie;
 import com.pankiv.movieland.service.MovieService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,8 +35,22 @@ public class MovieController {
 
     @GetMapping("/{id}")
     public ResponseEntity<MovieFullDataDto> getMovieById(@PathVariable Integer id,
-                                                 @RequestParam(value = "currency", defaultValue = "UAH") String currency) {
+                                                         @RequestParam(value = "currency", defaultValue = "UAH") String currency) {
         Optional<MovieFullDataDto> movie = movieService.getMovieByIdWithCurrency(id, currency.toUpperCase());
         return movie.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PostMapping()
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Movie> addMovie(@RequestBody MovieRequestDto movieRequestDto) {
+        Movie movie = movieService.addMovie(movieRequestDto);
+        return ResponseEntity.ok(movie);
+    }
+
+    @PostMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Movie> editMovie(@PathVariable Integer id, @RequestBody MovieRequestDto movieRequestDto) {
+        Movie movie = movieService.editMovie(id, movieRequestDto);
+        return ResponseEntity.ok(movie);
     }
 }

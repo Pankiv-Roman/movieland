@@ -1,4 +1,4 @@
-package com.pankiv.movieland.controller;
+package com.pankiv.movieland.web.controller;
 
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.core.api.dataset.ExpectedDataSet;
@@ -6,16 +6,24 @@ import com.pankiv.movieland.AbstractBaseITest;
 import com.pankiv.movieland.service.impl.NbuCurrencyService;
 import com.vladmihalcea.sql.SQLStatementCountValidator;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+
+import java.util.ArrayList;
 
 import static com.vladmihalcea.sql.SQLStatementCountValidator.assertSelectCount;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -27,6 +35,8 @@ class MovieControllerTest extends AbstractBaseITest {
 
     @MockBean
     NbuCurrencyService nbuCurrencyService;
+
+    String token;
 
     @Test
     @DataSet(value = "datasets/movie_and_genre_dataset.yml",
@@ -313,5 +323,81 @@ class MovieControllerTest extends AbstractBaseITest {
                 .andExpect(status().isOk());
 
         assertSelectCount(6);
+    }
+
+    @Test
+    @DataSet(value = "datasets/movie_user_country_genre_dataset.yml",
+            cleanAfter = true, cleanBefore = true, skipCleaningFor = "flyway_scheme_history")
+    @DisplayName("Test add movie when user is ADMIN")
+    void testAddMovie() throws Exception {
+        SQLStatementCountValidator.reset();
+        JSONObject loginJson = new JSONObject();
+        loginJson.put("email", "1111");
+        loginJson.put("password", "1111");
+
+        String response = mockMvc.perform(postJson("/api/v1/auth/login", loginJson.toString())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        JSONObject jsonResponse = new JSONObject(response);
+        token = jsonResponse.getString("token");
+
+        SecurityContextHolder.getContext().setAuthentication(
+                new UsernamePasswordAuthenticationToken("1111", null, new ArrayList<>())
+        );
+        mockMvc.perform(postJson("/api/v1/movies", "{" +
+                        "\"nameUkrainian\":\"testName\"," +
+                        "\"nameNative\":\"testName\"," +
+                        "\"yearOfRealise\":2004," +
+                        "\"description\":\"testDescription\"," +
+                        "\"price\":10," +
+                        "\"picturePath\":\"testPicturePact\"," +
+                        "\"countries\":[1]," +
+                        "\"genres\":[1, 2, 3]}")
+                        .param("Authorization", "Bearer " + this.token)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        assertSelectCount(5);
+    }
+    @Test
+    @DataSet(value = "datasets/movie_user_country_genre_dataset.yml",
+            cleanAfter = true, cleanBefore = true, skipCleaningFor = "flyway_scheme_history")
+    @DisplayName("Test edit movie when user is ADMIN")
+    void testEditMovie() throws Exception {
+        SQLStatementCountValidator.reset();
+        JSONObject loginJson = new JSONObject();
+        loginJson.put("email", "1111");
+        loginJson.put("password", "1111");
+
+        String response = mockMvc.perform(postJson("/api/v1/auth/login", loginJson.toString())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        JSONObject jsonResponse = new JSONObject(response);
+        token = jsonResponse.getString("token");
+
+        SecurityContextHolder.getContext().setAuthentication(
+                new UsernamePasswordAuthenticationToken("1111", null, new ArrayList<>())
+        );
+        mockMvc.perform(postJson("/api/v1/movies/2", "{" +
+                        "\"nameUkrainian\":\"testName\"," +
+                        "\"nameNative\":\"testName\"," +
+                        "\"yearOfRealise\":2004," +
+                        "\"description\":\"testDescription\"," +
+                        "\"price\":10," +
+                        "\"picturePath\":\"testPicturePact\"," +
+                        "\"countries\":[1]," +
+                        "\"genres\":[1, 2, 3]}")
+                        .param("Authorization", "Bearer " + this.token)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        assertSelectCount(7);
+    }
+    private static @NotNull MockHttpServletRequestBuilder postJson(String url, String content) {
+        return post(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(content);
     }
 }

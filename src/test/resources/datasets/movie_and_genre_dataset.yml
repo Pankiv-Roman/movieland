@@ -83,11 +83,17 @@ movie_genre:
   genre_id: 6
 
 users:
-- id: 3
-  nickname: "Дарлин Эдвардс"
+  - id: 3
+    nickname: "Дарлин Эдвардс"
+    email: "ronald.reynolds66@example.com"
+    password: "$2b$12$rxVOlHi5sTHsig55.lVI4OSAM.bC8t.a0xnH0ZQS0anW7me9NpKL6"
+    role: "USER"
 
-- id: 4
-  nickname: "Габриэль Джексон"
+  - id: 4
+    nickname: "Габриэль Джексон"
+    email: "1111"
+    password: "$2a$10$eWut91jcJjNUxmUpVp3OjO7fdRXZbH3sEYttR/1cgNbyuD8IkjNXO"
+    role: "ADMIN"
 
 review:
 - id: 1
