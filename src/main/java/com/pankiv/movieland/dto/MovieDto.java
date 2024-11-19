@@ -1,13 +1,14 @@
 package com.pankiv.movieland.dto;
 
-import com.pankiv.movieland.entity.Genre;
-import com.pankiv.movieland.entity.Movie;
+import com.pankiv.movieland.entity.*;
 import lombok.*;
 
 import java.util.List;
 
 @Builder
 @Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class MovieDto {

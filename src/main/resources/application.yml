@@ -21,6 +21,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  profiles:
+    active: Parallel
 logging:
   level:
     org:
@@ -30,3 +32,10 @@ logging:
           descriptor:
             sql:
               BasicBinder: TRACE
+      springframework:
+        security: DEBUG
+    com:
+      pankiv:
+        movieland:
+          web:
+            security: DEBUG

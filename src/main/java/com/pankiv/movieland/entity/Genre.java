@@ -1,7 +1,8 @@
 package com.pankiv.movieland.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,25 +10,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Setter
 @RequiredArgsConstructor
 @Entity
 @Table(name = "genre")
-@Data
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Genre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Integer id;
 
     private String genre;
 
     @ManyToMany(mappedBy = "genres")
-    @JsonIgnoreProperties("genres")
     @JsonIgnore
     private List<Movie> movies = new ArrayList<>();
 
     public void setGenre(String test) {
         //checking the cache in the test
     }
-
 }

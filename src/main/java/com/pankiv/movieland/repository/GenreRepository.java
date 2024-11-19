@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface GenreRepository extends JpaRepository<Genre, Integer> {
-//    @Query("SELECT g FROM Genre g JOIN g.movies m WHERE m.id = :movieId")
-//    List<Genre> findByMovieId(int movieId);
+    @Query(value = "SELECT g FROM Genre g JOIN g.movies m WHERE m.id = :movieId")
+    List<Genre> findAllByMovieId(Long movieId);
 }

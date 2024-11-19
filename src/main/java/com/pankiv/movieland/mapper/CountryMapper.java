@@ -13,7 +13,4 @@ public interface CountryMapper {
     List<CountryDto> toDtoList(List<Country> countries);
 
     Country toEntity(CountryDto countryDto);
-
-    List<Country> toEntityList(List<CountryDto> countriesDtoList);
-
 }

@@ -1,9 +1,6 @@
 package com.pankiv.movieland.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Builder
 @Data
@@ -12,4 +9,8 @@ import lombok.NoArgsConstructor;
 public class ReviewDto {
     private int id;
     private String text;
+    @Getter
+    private UserDto user;
+
+
 }

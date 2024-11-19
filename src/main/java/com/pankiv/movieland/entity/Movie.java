@@ -1,21 +1,18 @@
 package com.pankiv.movieland.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.pankiv.movieland.dto.MovieDto;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
-
 @Entity
 @Table(name = "movie")
-
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +32,7 @@ public class Movie {
             joinColumns = @JoinColumn(name = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id")
     )
-    @JsonIgnore
+    @ToString.Exclude
     private List<Genre> genres = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -44,11 +41,10 @@ public class Movie {
             joinColumns = @JoinColumn(name = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "country_id")
     )
-    @JsonIgnore
+    @ToString.Exclude
     private List<Country> countries = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "movie_id", referencedColumnName = "id")
-    @JsonIgnore
+    @OneToMany(mappedBy = "movie", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<Review> reviews = new ArrayList<>();
 }
