@@ -3,6 +3,7 @@ package com.pankiv.movieland.web.controller;
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.core.api.dataset.ExpectedDataSet;
 import com.pankiv.movieland.AbstractBaseITest;
+import com.pankiv.movieland.service.impl.MovieEnrichmentService;
 import com.pankiv.movieland.service.impl.NbuCurrencyService;
 import com.vladmihalcea.sql.SQLStatementCountValidator;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,9 @@ class MovieControllerTest extends AbstractBaseITest {
 
     @MockBean
     NbuCurrencyService nbuCurrencyService;
+
+    @MockBean
+    MovieEnrichmentService movieEnrichmentService;
 
     String token;
 
@@ -326,7 +330,7 @@ class MovieControllerTest extends AbstractBaseITest {
     }
 
     @Test
-    @DataSet(value = "datasets/movie_user_country_genre_dataset.yml",
+    @DataSet(value = "datasets/movie_without_movieId_user_country_genre_dataset.yml",
             cleanAfter = true, cleanBefore = true, skipCleaningFor = "flyway_scheme_history")
     @DisplayName("Test add movie when user is ADMIN")
     void testAddMovie() throws Exception {

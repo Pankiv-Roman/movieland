@@ -6,6 +6,7 @@ import com.pankiv.movieland.dto.MovieFullDataDto;
 import com.pankiv.movieland.dto.MovieRequestDto;
 import com.pankiv.movieland.entity.Movie;
 import com.pankiv.movieland.service.MovieService;
+import com.pankiv.movieland.service.impl.MovieEnrichmentService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,6 +22,7 @@ import java.util.Optional;
 public class MovieController {
 
     private final MovieService movieService;
+    private final MovieEnrichmentService movieEnrichmentService;
 
     @GetMapping()
     public List<MovieDto> getListMovies(@RequestParam(name = "rating", required = false) String ratingSortOrder,
@@ -36,6 +38,7 @@ public class MovieController {
     @GetMapping("/{id}")
     public ResponseEntity<MovieFullDataDto> getMovieById(@PathVariable Integer id,
                                                          @RequestParam(value = "currency", defaultValue = "UAH") String currency) {
+        movieEnrichmentService.enrichMovieData((long) id);
         Optional<MovieFullDataDto> movie = movieService.getMovieByIdWithCurrency(id, currency.toUpperCase());
         return movie.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }

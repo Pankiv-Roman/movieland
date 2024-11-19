@@ -6,6 +6,7 @@ import com.pankiv.movieland.dto.MovieRequestDto;
 import com.pankiv.movieland.entity.Country;
 import com.pankiv.movieland.entity.Genre;
 import com.pankiv.movieland.entity.Movie;
+import com.pankiv.movieland.entity.Review;
 import com.pankiv.movieland.mapper.MovieFullDataMapper;
 import com.pankiv.movieland.mapper.MovieMapper;
 import com.pankiv.movieland.repository.CountryRepository;
@@ -85,6 +86,21 @@ public class DefaultMovieService implements MovieService {
     public Movie editMovie(Integer id, MovieRequestDto movieRequestDto) {
         Movie editMovie = movieRepository.getReferenceById(id);
         return getMovie(movieRequestDto, editMovie);
+    }
+
+    @Override
+    public List<Genre> getGenres(Long movieId) {
+        return genreRepository.findAllByMovieId(movieId);
+    }
+
+    @Override
+    public List<Review> getReviews(Long movieId) {
+        return reviewRepository.findAllByMovieId(movieId);
+    }
+
+    @Override
+    public List<Country> getCountries(Long movieId) {
+        return countryRepository.findAllByMovieId(movieId);
     }
 
     private @NotNull Movie getMovie(@NotNull MovieRequestDto movieRequestDto, @NotNull Movie addMovie) {

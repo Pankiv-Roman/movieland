@@ -3,6 +3,7 @@ package com.pankiv.movieland.web.controller;
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.core.api.dataset.ExpectedDataSet;
 import com.pankiv.movieland.AbstractBaseITest;
+import com.pankiv.movieland.service.impl.MovieEnrichmentService;
 import com.vladmihalcea.sql.SQLStatementCountValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -10,6 +11,7 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -24,6 +26,9 @@ class AuthControllerTest extends AbstractBaseITest {
 
     @Autowired
     MockMvc mockMvc;
+
+    @MockBean
+    MovieEnrichmentService movieEnrichmentService;
 
     String token;
 
